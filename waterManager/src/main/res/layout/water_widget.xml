@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/widget_bg" >
+	
+	<ImageView
+		android:id="@+id/iv_cup"
+		android:layout_width="60dp"
+		android:layout_height="48dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginLeft="5dp"
+		android:layout_alignParentLeft="true"
+		android:contentDescription="@string/cd_text_bg"
+		android:src="@color/first"/>
+	
+	<TextView
+		android:id="@+id/tv_percentage"
+		android:layout_width="60dp"
+		android:layout_height="48dp"
+		android:layout_alignTop="@id/iv_cup"
+		android:layout_alignLeft="@id/iv_cup"
+		android:gravity="center"
+		android:textSize="20sp"
+		android:textColor="#FFFFFF" />
+	
+	<Button
+		android:id="@+id/btn_plus"
+		android:layout_width="wrap_content"
+		android:layout_height="48dp"
+		android:layout_alignTop="@id/iv_cup"
+		android:layout_centerHorizontal="true"
+		android:paddingLeft="2dp"
+		android:paddingRight="2dp"
+		android:text="@string/btn_plus"/>
+	
+	<Button
+		android:id="@+id/btn_minus"
+		android:layout_width="wrap_content"
+		android:layout_height="48dp"
+		android:layout_alignTop="@id/btn_plus"
+		android:layout_marginRight="5dp"
+		
+		android:layout_alignParentRight="true"
+		android:paddingLeft="2dp"
+		android:paddingRight="2dp"
+		android:text="@string/btn_minus"/>
+		
+	<ProgressBar 
+		style="@android:style/Widget.ProgressBar.Horizontal"
+		android:id="@+id/pb_percentage"
+		android:layout_below="@id/iv_cup"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp" />
+</RelativeLayout>

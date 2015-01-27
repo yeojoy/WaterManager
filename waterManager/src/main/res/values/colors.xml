@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="color" name="first">#111111</item>	
+    <item type="color" name="second">#222222</item>	
+    <item type="color" name="third">#333333</item>	
+    <item type="color" name="fourth">#444444</item>	
+    <item type="color" name="fifth">#555555</item>	
+    <item type="color" name="sixth">#666666</item>	
+    <item type="color" name="seventh">#777777</item>	
+    <item type="color" name="eighth">#888888</item>	
+    <item type="color" name="nineth">#999999</item>	
+    
+    <item type="color" name="widget_stroke">#FFFFFF</item>
+    <item type="color" name="widget_bg">#EEEEEE</item>
+</resources>
