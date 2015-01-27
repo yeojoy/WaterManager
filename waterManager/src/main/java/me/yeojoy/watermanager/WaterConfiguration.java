@@ -56,6 +56,7 @@ public class WaterConfiguration extends Activity implements Consts {
             // Configuration Activity에서도 appWidgetManager.update를 호출해서
             // 불가피하게 Provider 내에 setWidgetViews를 static으로 변경하고
             // 여기에서도 호출하게 함. 
+            // 설정한 내용을 적용할 땐 뭔가 model로 넘겨주면 된다.
             WaterWidgetProvider.setWidgetViews(mContext, views,
                     appWidgetManager, mAppWidgetId);
             MyLog.i(TAG, "onCreate(), App Widget ID is valid.");
