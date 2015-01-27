@@ -22,12 +22,43 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
     private static final int MIN = 0;
     
     private static int COUNT = -1;
+
+    private static int[] colorList = {
+            R.color.first, R.color.second, R.color.third, R.color.fourth,
+            R.color.fifth, R.color.sixth, R.color.seventh, R.color.eighth, R.color.nineth
+    };
+
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        MyLog.i(TAG, "onEnabled()");
+    }
+    
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        MyLog.i(TAG, "onUpdate()");
+        final int widgetCount = appWidgetIds.length;
+
+        for (int i = 0; i < widgetCount; i++) {
+            MyLog.d(TAG, "onUpdate(), AppWidget ID : " + appWidgetIds[i]);
+
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.water_widget);
+
+            setWidgetViews(context, views, appWidgetManager, appWidgetIds[i]);
+        }
+    }
+
     
     @Override
     public void onReceive(Context context, Intent intent) {
         MyLog.i(TAG, "onReceive()");
         super.onReceive(context, intent);
         if (intent == null) return;
+        
+        if (intent != null && intent.getStringExtra("aaa") != null) {
+            MyLog.i(TAG, "onReceive(), aaa : " + intent.getStringExtra("aaa"));
+        }
         
         COUNT = PreferencesUtil.getInstance(context).getInt(PREFS_KEY_COUNTS, 0);
         if (COUNT == -1) {
@@ -58,40 +89,22 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
             
             setWidgetViews(context, views, null, -1);
         }
-        
-        Toast.makeText(context, "ACTION ::: " + action, Toast.LENGTH_SHORT).show();
-    }
-    
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        MyLog.i(TAG, "onUpdate()");
-        final int widgetCount = appWidgetIds.length;
-        
-        for (int i = 0; i < widgetCount; i++) {
-            MyLog.d(TAG, "onUpdate(), AppWidget ID : " + appWidgetIds[i]);
-            
-            // PendingIntent의 id값이 같아지면 바로 가장 마지막 PendingIntent의
-            // Intent로 강제 update되는 사태가 발생함.
-            Intent plusIntent = new Intent("me.yeojoy.PLUS");
-            PendingIntent plusPIntent = PendingIntent.getBroadcast(context, 2222, plusIntent, 0);
-            
-            Intent minusIntent = new Intent("me.yeojoy.MINUS");
-            PendingIntent minusPIntent = PendingIntent.getBroadcast(context, 1111, minusIntent, 0);
-            
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.water_widget);
-            views.setOnClickPendingIntent(R.id.btn_plus, plusPIntent);
-            views.setOnClickPendingIntent(R.id.btn_minus, minusPIntent);
-            
-            setWidgetViews(context, views, appWidgetManager, appWidgetIds[i]);
-        }
+        String msg = "ACTION ::: " + action + ", COUNT : " + COUNT;
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    private int[] colorList = {
-            R.color.first, R.color.second, R.color.third, R.color.fourth,
-            R.color.fifth, R.color.sixth, R.color.seventh, R.color.eighth, R.color.nineth
-    };
-    
-    private void setWidgetViews(Context context, RemoteViews views, 
+    /**
+     * onReceive, onUpdate, Configuration Activity에서
+     * AppWidgetManager.updateAppWidget()을 호출하므로 여기 한 곳으로 몰아서\
+     * View와 Event를 생성 및 등록해 줘야 한다.
+     * Configuration Activity에서 받기 위해 불가피하게 static으로 변경
+     * ViewManager를 만들어서 처리의 일원화가 필요함.
+     * @param context
+     * @param views
+     * @param appWidgetManager
+     * @param widgetId
+     */
+    public static void setWidgetViews(Context context, RemoteViews views,
             AppWidgetManager appWidgetManager, int widgetId) {
         MyLog.i(TAG, "setWidgetViews()");
         // View가 업데이트 됐음을 알린다.
@@ -103,14 +116,28 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
             COUNT = PreferencesUtil.getInstance(context).getInt(PREFS_KEY_COUNTS, 0);
         
         MyLog.d(TAG, "setWidgetViews(), COUNT is " + COUNT);
+
+        // PendingIntent의 requestCode가 같아지면 바로 가장 마지막 PendingIntent의
+        // Intent로 강제 update되는 사태가 발생함.
+        Intent plusIntent = new Intent(PLUS_ACTION);
+        PendingIntent plusPIntent = PendingIntent.getBroadcast(context,
+                PLUS_ID, plusIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        Intent minusIntent = new Intent(MINUS_ACTION);
+        PendingIntent minusPIntent = PendingIntent.getBroadcast(context,
+                MINUS_ID, minusIntent, PendingIntent.FLAG_ONE_SHOT);
+        views.setOnClickPendingIntent(R.id.btn_plus, plusPIntent);
+        views.setOnClickPendingIntent(R.id.btn_minus, minusPIntent);
         
         views.setImageViewResource(R.id.iv_cup, colorList[COUNT]);
+        
         if (COUNT == 0) {
             views.setTextViewText(R.id.tv_percentage, "0");
             views.setProgressBar(R.id.pb_percentage, 100, 0, false);
         } else {
-            views.setTextViewText(R.id.tv_percentage, String.valueOf((int) (100 / COUNT)));
-            views.setProgressBar(R.id.pb_percentage, 100, (int) (100 / COUNT), false);
+            int percentage = (int) (COUNT * ONE_SHOT);
+            views.setTextViewText(R.id.tv_percentage, String.valueOf(percentage));
+            views.setProgressBar(R.id.pb_percentage, 100, percentage, false);
         }
         // Tell the AppWidgetManager to perform an update on the current app widget
         if (widgetId != -1) {
@@ -120,6 +147,5 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
             appWidgetManager.updateAppWidget(myWidget, views);
         }
     }
-    
     
 }
