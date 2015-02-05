@@ -17,10 +17,6 @@ public class WaterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
     }
 
     @Override
@@ -37,26 +33,12 @@ public class WaterActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_water, container, false);
-            return rootView;
-        }
-    }
 
 }

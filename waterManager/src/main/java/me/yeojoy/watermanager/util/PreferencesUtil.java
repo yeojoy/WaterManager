@@ -13,59 +13,58 @@ public class PreferencesUtil implements Consts {
     
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
-    
-    public static PreferencesUtil getInstance(Context context) {
-        MyLog.i(TAG, "getInstance()");
-        if (util == null) {
-            util = new PreferencesUtil();
-            init(context);
-        }
-        return util;
-    }
-    
-    private static void init(Context context) {
+
+    public PreferencesUtil(Context context) {
         MyLog.i(TAG, "init()");
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();
     }
-    
+
+    public static PreferencesUtil getInstance(Context context) {
+        MyLog.i(TAG, "getInstance()");
+        if (util == null) {
+            util = new PreferencesUtil(context);
+        }
+        return util;
+    }
+
     // SETTER
-    public synchronized boolean putString(String key, String value) {
+    public void putString(String key, String value) {
         editor.putString(key, value);
-        return editor.commit();
+        editor.apply();
     }
     
-    public synchronized boolean putInt(String key, int value) {
+    public void putInt(String key, int value) {
         editor.putInt(key, value);
-        return editor.commit();
+        editor.apply();
     }
-    public synchronized boolean putBoolean(String key, boolean value) {
+    public void putBoolean(String key, boolean value) {
         editor.putBoolean(key, value);
-        return editor.commit();
+        editor.apply();
     }
     
     // GETTER
-    public synchronized String getString(String key) {
+    public String getString(String key) {
         return prefs.getString(key, null);
     }
     
-    public synchronized String getString(String key, String defaultValue) {
+    public String getString(String key, String defaultValue) {
         return prefs.getString(key, defaultValue);
     }
     
-    public synchronized int getInt(String key) {
+    public int getInt(String key) {
         return prefs.getInt(key, -1);
     }
     
-    public synchronized int getInt(String key, int defaultValue) {
+    public int getInt(String key, int defaultValue) {
         return prefs.getInt(key, defaultValue);
     }
     
-    public synchronized boolean getBoolean(String key) {
+    public boolean getBoolean(String key) {
         return prefs.getBoolean(key, false);
     }
     
-    public synchronized boolean getBoolean(String key, boolean defaultValue) {
+    public boolean getBoolean(String key, boolean defaultValue) {
         return prefs.getBoolean(key, defaultValue);
     }
 }
