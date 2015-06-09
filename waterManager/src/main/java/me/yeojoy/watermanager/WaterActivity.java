@@ -3,6 +3,8 @@ package me.yeojoy.watermanager;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,13 +12,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import my.lib.MyLog;
+
 public class WaterActivity extends Activity {
+
+    private static final String TAG = WaterActivity.class.getSimpleName();
+
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water);
 
+        mContext = this;
     }
 
     @Override
@@ -35,10 +44,12 @@ public class WaterActivity extends Activity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            MyLog.d(TAG, "go to WaterConfiguration activity.");
+
+            Intent intent = new Intent(mContext, WaterConfiguration.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

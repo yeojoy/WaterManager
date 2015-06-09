@@ -12,8 +12,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
 
@@ -52,8 +56,17 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
         super.onReceive(context, intent);
         if (intent == null) return;
         
-        if (intent != null && intent.getStringExtra("aaa") != null) {
-            MyLog.i(TAG, "onReceive(), aaa : " + intent.getStringExtra("aaa"));
+        if (intent != null && intent.getExtras() != null) {
+            Bundle bundle = intent.getExtras();
+            Set<String> keySet = bundle.keySet();
+            Iterator<String> i = keySet.iterator();
+            
+            MyLog.d(TAG, "======================================================");
+            while (i.hasNext()) {
+                String key = i.next();
+                MyLog.d(TAG, "key : " + key + ", value : " + String.valueOf(bundle.get(key)));
+            }
+            MyLog.d(TAG, "======================================================");
         }
         
         final String action = intent.getAction();

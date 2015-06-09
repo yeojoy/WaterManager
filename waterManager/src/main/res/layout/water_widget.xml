@@ -3,7 +3,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
     android:paddingBottom="5dp"
-	android:background="@drawable/widget_bg" >
+	android:background="@drawable/widget_bg">
 	
 	<ImageView
 		android:id="@+id/iv_cup"
@@ -41,7 +41,6 @@
 		android:layout_height="48dp"
 		android:layout_alignTop="@id/btn_plus"
 		android:layout_marginRight="5dp"
-		
 		android:layout_alignParentRight="true"
 		android:paddingLeft="2dp"
 		android:paddingRight="2dp"

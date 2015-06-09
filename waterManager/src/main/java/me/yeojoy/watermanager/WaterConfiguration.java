@@ -50,10 +50,12 @@ public class WaterConfiguration extends Activity implements Consts,
         // of the AppWidgetManager by calling
         appWidgetManager = AppWidgetManager.getInstance(this);
 
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish();
-        }
-        
+//        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+//            finish();
+//        }
+
+        mBtnFinish = (Button) findViewById(R.id.btn_finish);
+        mBtnFinish.setOnClickListener(this);
     }
 
     @Override

@@ -9,5 +9,13 @@
 	<string name="btn_minus">-</string>
 	
 	<string name="cd_text_bg">Text Background Color</string>
-	
+
+	<string name="user_height">키</string>
+	<string name="user_weight">몸무게</string>
+
+	<string name="weight_unit">kg</string>
+	<string name="height_unit">cm</string>
+
+	<string name="hint_height">171</string>
+	<string name="hint_weight">71</string>
 </resources>
