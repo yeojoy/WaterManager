@@ -7,6 +7,8 @@ public interface Consts {
     
     /** SharedPreferences key name */
     public static final String PREFS_KEY_COUNTS = "w_counts";
+
+    public static final String PREFS_KEY_DAILY_GOAL_QUANTITY = "quantity";
     
     public static final String PLUS_ACTION  = "me.yeojoy.action.PLUS";
     public static final String MINUS_ACTION = "me.yeojoy.action.MINUS";

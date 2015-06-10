@@ -12,12 +12,20 @@ public class WaterManagerApplication extends Application implements Consts {
 
     public static int COUNT = -1;
 
-    public static final int DAILY_GOAL_WATER_QUANTITY = 2000;
+    public static int DAILY_GOAL_WATER_QUANTITY = 0;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        DAILY_GOAL_WATER_QUANTITY = PreferencesUtil.getInstance(this)
+                .getInt(PREFS_KEY_DAILY_GOAL_QUANTITY);
+
         COUNT = PreferencesUtil.getInstance(this).getInt(PREFS_KEY_COUNTS, 0);
+    }
+
+    public void initDailyGoalQuantity() {
+        DAILY_GOAL_WATER_QUANTITY = 0;
+        PreferencesUtil.getInstance(this).putInt(PREFS_KEY_DAILY_GOAL_QUANTITY, 0);
     }
 }
