@@ -10,12 +10,17 @@
 	
 	<string name="cd_text_bg">Text Background Color</string>
 
-	<string name="user_height">키</string>
-	<string name="user_weight">몸무게</string>
+	<string name="user_age">나이</string>
 
-	<string name="weight_unit">kg</string>
-	<string name="height_unit">cm</string>
 
-	<string name="hint_height">171</string>
-	<string name="hint_weight">71</string>
+	<string name="hint_age">28</string>
+
+	<string name="male">남</string>
+	<string name="female">여</string>
+
+	<string name="be_expection_a_baby">임신 중</string>
+	<string name="feeding_a_baby">수유 중</string>
+
+	<string name="warning_input_age">나이는 숫자로 입력해 주세요.</string>
+	<string name="warning_age_invalid">나이는 0 ~ 120살까지 입력할 수 있습니다.</string>
 </resources>

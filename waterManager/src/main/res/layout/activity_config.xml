@@ -6,93 +6,100 @@
 	tools:context="me.yeojoy.watermanager.WaterConfiguration"
 	tools:ignore="MergeRootFrame" >
 
+
     <TextView
-        android:id="@+id/tv_label_height"
+        android:id="@+id/tv_label_age"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="80dp"
         android:gravity="center"
-        android:text="@string/user_height"/>
+        android:text="@string/user_age"/>
 
     <EditText
-        android:id="@+id/et_height"
+        android:id="@+id/et_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tv_label_height"
-        android:layout_toLeftOf="@+id/tv_label_height_unit"
-        android:layout_alignBaseline="@id/tv_label_height"
+        android:layout_marginRight="110dp"
+        android:layout_toRightOf="@id/tv_label_age"
+        android:layout_alignBaseline="@id/tv_label_age"
         android:inputType="numberDecimal"
-        android:hint="@string/hint_height"/>
+        android:hint="@string/hint_age"/>
 
-    <TextView
-        android:id="@id/tv_label_height_unit"
-        android:layout_width="30dp"
+    <RadioGroup
+        android:id="@+id/rg_male_female"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="3dp"
-        android:layout_alignBaseline="@id/et_height"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="@string/height_unit"/>
-
-    <TextView
-        android:id="@+id/tv_label_weight"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/tv_label_height"
-        android:gravity="center"
-        android:text="@string/user_weight"/>
-
-    <EditText
-        android:id="@+id/et_weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tv_label_weight"
-        android:layout_toLeftOf="@+id/tv_label_weight_unit"
-        android:layout_alignBaseline="@id/tv_label_weight"
-        android:inputType="numberDecimal"
-        android:hint="@string/hint_weight"/>
-
-    <TextView
-        android:id="@id/tv_label_weight_unit"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="3dp"
-        android:layout_alignBaseline="@id/et_weight"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="@string/weight_unit"/>
-
-    <TextView
-        android:id="@+id/tv_result_quantity"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/tv_label_weight"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:text="2000 ml"/>
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/tv_label_age"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rb_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male"/>
+        <RadioButton
+            android:id="@+id/rb_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="@string/female"/>
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:id="@+id/ll_for_female"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rg_male_female"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <CheckBox
+            android:id="@+id/cb_be_expecting_a_baby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/be_expection_a_baby"/>
+        <CheckBox
+            android:id="@+id/cb_feeding_a_baby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:checked="false"
+            android:text="@string/feeding_a_baby"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_result_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_result_quantity"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/ll_for_female"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:gravity="left|top"
-        android:text="당신이 하루동안 마셔야할 양입니다. "/>
+        android:text="당신이 하루동안 마셔야할 양입니다. "
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_result_desc"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="left|top"
+        android:textSize="40dp"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btn_finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:text="@android:string/ok"
         android:layout_margin="10dp" />
 </RelativeLayout>
