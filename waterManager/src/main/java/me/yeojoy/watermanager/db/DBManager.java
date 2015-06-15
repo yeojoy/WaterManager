@@ -8,7 +8,11 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.yeojoy.watermanager.BuildConfig;
+import me.yeojoy.watermanager.R;
 import me.yeojoy.watermanager.model.MyWater;
 import my.lib.MyLog;
 
@@ -22,7 +26,9 @@ public class DBManager implements DBConstants {
     private static Context mContext;
     
     private static DBHelper mDBHelper;
-    
+
+    private AsyncQueryResultListener mAsyncQueryResultListener;
+
     public static DBManager getInstance(Context context) {
         if (mManager == null)
             mManager = new DBManager();
@@ -37,7 +43,9 @@ public class DBManager implements DBConstants {
         mDBHelper = new DBHelper(mContext);
     }
 
-    public synchronized void saveData(MyWater data) {
+
+
+    public void saveData(MyWater data) {
         MyLog.i(TAG, "saveData()");
         if (data != null) {
             DBInsertAsyncTask task = new DBInsertAsyncTask();
@@ -92,7 +100,7 @@ public class DBManager implements DBConstants {
 
     /**
      * 동일한 시간대에 데이터가 저장 됐는지 확인한다.
-     * @param MyWater
+     * @param dto
      * @return 이미 같은 시간이 저장 됐으면 true
      *         없으면 false
      */
@@ -125,6 +133,62 @@ public class DBManager implements DBConstants {
     }
 
     /**
+     * date를 받아서 date에 마신 물의 양을 DB에 저장한 데이터를 가져온다.
+     * @param date
+     * @return
+     */
+    private List<MyWater> selectMyWater(String date) {
+        MyLog.i(TAG, "selectMyWater()");
+
+        Cursor cursor = null;
+
+        // TODO select last data
+        SQLiteDatabase db = null;
+        try {
+
+            db = mDBHelper.getReadableDatabase();
+
+            if (date == null || date.isEmpty()) {
+                cursor = db.query(TABLE_NAME, null, null, null,
+                        null, null, null);
+            } else {
+                String[] selectionArgs = { date };
+                cursor = db.query(TABLE_NAME, null, DATE + " = ?", selectionArgs,
+                        null, null, null);
+            }
+
+            if (cursor == null && cursor.getCount() < 1) {
+                MyLog.d(TAG, mContext.getString(R.string.warning_no_date));
+                return null;
+            }
+        } catch (SQLiteException e) {
+            MyLog.e(TAG, e.getMessage());
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+
+        return convertCursorToList(cursor);
+    }
+
+    private List<MyWater> convertCursorToList(Cursor cursor) {
+        List<MyWater> list = new ArrayList<MyWater>(cursor.getCount());
+
+        MyWater water = null;
+        cursor.moveToFirst();
+        do {
+            water = new MyWater(cursor.getInt(INDEX_ID),
+                    cursor.getString(INDEX_DATE),
+                    cursor.getString(INDEX_TIME),
+                    cursor.getInt(INDEX_QUANTITY));
+            list.add(water);
+        } while (cursor.moveToNext());
+
+        return list;
+    }
+
+    /**
      * AsyncTask를 사용해서 DB에 데이터를 입력한다.
      */
     private class DBInsertAsyncTask extends AsyncTask<MyWater, Void, Void> {
@@ -149,4 +213,26 @@ public class DBManager implements DBConstants {
                         Toast.LENGTH_SHORT).show();
         }
     }
+
+    private class DBSelectAsyncTask extends AsyncTask<Void, Void, List<MyWater>> {
+
+        private String date;
+
+        public DBSelectAsyncTask(String date) {
+            this.date = date;
+        }
+
+        @Override
+        protected List<MyWater> doInBackground(Void... params) {
+            return selectMyWater(date);
+        }
+
+        @Override
+        protected void onPostExecute(List<MyWater> list) {
+            super.onPostExecute(list);
+            if (mAsyncQueryResultListener != null) {
+                mAsyncQueryResultListener.onQueryResult(list);
+            }
+        }
+    };
 }

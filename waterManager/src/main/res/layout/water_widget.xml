@@ -15,16 +15,6 @@
 		android:contentDescription="@string/cd_text_bg"
 		android:src="@color/first"/>
 	
-	<TextView
-		android:id="@+id/tv_percentage"
-		android:layout_width="60dp"
-		android:layout_height="48dp"
-		android:layout_alignTop="@id/iv_cup"
-		android:layout_alignLeft="@id/iv_cup"
-		android:gravity="center"
-		android:textSize="20sp"
-		android:textColor="#FFFFFF" />
-	
 	<Button
 		android:id="@+id/btn_plus"
 		android:layout_width="wrap_content"
@@ -56,4 +46,17 @@
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="5dp"
 		android:layout_marginBottom="5dp" />
+
+	<TextView
+		android:id="@+id/tv_percentage"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignTop="@id/pb_percentage"
+		android:layout_alignLeft="@id/pb_percentage"
+		android:layout_alignRight="@id/pb_percentage"
+		android:layout_alignBottom="@id/pb_percentage"
+		android:gravity="center"
+		android:textSize="18sp"
+		android:textColor="#FFFFFF"
+		android:text="1000/2600 ml"/>
 </RelativeLayout>

@@ -12,9 +12,9 @@ public class MyWater implements Parcelable {
 
     private String drinkingDate;
     private String drinkingTime;
-    private String drinkingQuantity;
+    private int drinkingQuantity;
 
-    public MyWater(int id, String drinkingDate, String drinkingTime, String drinkingQuantity) {
+    public MyWater(int id, String drinkingDate, String drinkingTime, int drinkingQuantity) {
         this.id = id;
         this.drinkingDate = drinkingDate;
         this.drinkingTime = drinkingTime;
@@ -49,11 +49,11 @@ public class MyWater implements Parcelable {
         this.drinkingTime = drinkingTime;
     }
 
-    public String getDrinkingQuantity() {
+    public int getDrinkingQuantity() {
         return drinkingQuantity;
     }
 
-    public void setDrinkingQuantity(String drinkingQuantity) {
+    public void setDrinkingQuantity(int drinkingQuantity) {
         this.drinkingQuantity = drinkingQuantity;
     }
 
@@ -87,13 +87,13 @@ public class MyWater implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(drinkingDate);
         parcel.writeString(drinkingTime);
-        parcel.writeString(drinkingQuantity);
+        parcel.writeInt(drinkingQuantity);
     }
 
     public void readToParcel(Parcel parcel) {
         setId(parcel.readInt());
         setDrinkingDate(parcel.readString());
         setDrinkingTime(parcel.readString());
-        setDrinkingQuantity(parcel.readString());
+        setDrinkingQuantity(parcel.readInt());
     }
 }

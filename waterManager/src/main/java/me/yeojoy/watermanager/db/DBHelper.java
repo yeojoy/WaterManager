@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper implements DBConstants {
         sb.append(ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(DATE).append(" TEXT, ");             // 저장시각
         sb.append(TIME).append(" TEXT, ");             // 시도 이름
-        sb.append(QUANTITY).append(" TEXT").append(" );");
+        sb.append(QUANTITY).append(" INTEGER").append(" );");
 
         MyLog.e(TAG, "SQL CREATE -> " + sb.toString());
         db.execSQL(sb.toString());
