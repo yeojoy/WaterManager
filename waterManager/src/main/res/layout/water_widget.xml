@@ -5,58 +5,48 @@
     android:paddingBottom="5dp"
 	android:background="@drawable/widget_bg">
 	
-	<ImageView
-		android:id="@+id/iv_cup"
-		android:layout_width="60dp"
-		android:layout_height="48dp"
-		android:layout_marginTop="5dp"
-		android:layout_marginLeft="5dp"
-		android:layout_alignParentLeft="true"
-		android:contentDescription="@string/cd_text_bg"
-		android:src="@color/first"/>
-	
-	<Button
-		android:id="@+id/btn_plus"
+	<TextView
+		android:id="@+id/tv_today_quantity"
 		android:layout_width="wrap_content"
-		android:layout_height="48dp"
-		android:layout_alignTop="@id/iv_cup"
-		android:layout_centerHorizontal="true"
+		android:layout_height="64dp"
+		android:layout_marginLeft="5dp"
+		android:layout_centerVertical="true"
+		android:layout_alignParentLeft="true"
+        android:textColor="@android:color/black"
+        android:textSize="22dp"
+        android:gravity="center"/>
+
+	<Button
+		android:id="@+id/btn_small"
+		android:layout_width="wrap_content"
+		android:layout_height="64dp"
+		android:layout_alignTop="@id/tv_today_quantity"
+        android:layout_toLeftOf="@+id/btn_medium"
 		android:paddingLeft="2dp"
 		android:paddingRight="2dp"
-		android:text="@string/btn_plus"/>
+		android:text="@string/btn_small"/>
 	
 	<Button
-		android:id="@+id/btn_minus"
+		android:id="@id/btn_medium"
 		android:layout_width="wrap_content"
-		android:layout_height="48dp"
-		android:layout_alignTop="@id/btn_plus"
+		android:layout_height="64dp"
+        android:layout_alignTop="@id/tv_today_quantity"
+        android:layout_toLeftOf="@+id/btn_big"
+        android:layout_marginLeft="5dp"
+		android:paddingLeft="2dp"
+		android:paddingRight="2dp"
+		android:text="@string/btn_medium"/>
+
+	<Button
+		android:id="@id/btn_big"
+		android:layout_width="wrap_content"
+		android:layout_height="64dp"
+        android:layout_alignTop="@id/tv_today_quantity"
 		android:layout_marginRight="5dp"
 		android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
 		android:paddingLeft="2dp"
 		android:paddingRight="2dp"
-		android:text="@string/btn_minus"/>
+		android:text="@string/btn_big"/>
 		
-	<ProgressBar 
-		style="@android:style/Widget.ProgressBar.Horizontal"
-		android:id="@+id/pb_percentage"
-		android:layout_below="@id/iv_cup"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
-		android:layout_marginTop="5dp"
-		android:layout_marginBottom="5dp" />
-
-	<TextView
-		android:id="@+id/tv_percentage"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_alignTop="@id/pb_percentage"
-		android:layout_alignLeft="@id/pb_percentage"
-		android:layout_alignRight="@id/pb_percentage"
-		android:layout_alignBottom="@id/pb_percentage"
-		android:gravity="center"
-		android:textSize="18sp"
-		android:textColor="#FFFFFF"
-		android:text="1000/2600 ml"/>
 </RelativeLayout>

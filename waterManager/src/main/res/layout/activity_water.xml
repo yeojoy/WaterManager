@@ -1,8 +1,51 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+    android:orientation="vertical"
 	tools:context="me.yeojoy.watermanager.WaterActivity"
 	tools:ignore="MergeRootFrame" >
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_the_day_before"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:text="<"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="2015-06-18"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btn_the_day_after"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:text=">"/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/lv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:text="@string/warning_no_data_on_listview"
+        android:textSize="24dp"
+        android:gravity="center"/>
+</LinearLayout>

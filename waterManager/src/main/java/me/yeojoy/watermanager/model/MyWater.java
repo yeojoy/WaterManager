@@ -10,9 +10,13 @@ public class MyWater implements Parcelable {
 
     private int id = -1;
 
+    /** date format > yyyy-MM-dd */
     private String drinkingDate;
+    /** time format(24Hours) > HH:mm:ss */
     private String drinkingTime;
     private int drinkingQuantity;
+
+    public MyWater() {}
 
     public MyWater(int id, String drinkingDate, String drinkingTime, int drinkingQuantity) {
         this.id = id;

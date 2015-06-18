@@ -27,8 +27,6 @@ public class DBManager implements DBConstants {
     
     private static DBHelper mDBHelper;
 
-    private AsyncQueryResultListener mAsyncQueryResultListener;
-
     public static DBManager getInstance(Context context) {
         if (mManager == null)
             mManager = new DBManager();
@@ -43,14 +41,17 @@ public class DBManager implements DBConstants {
         mDBHelper = new DBHelper(mContext);
     }
 
-
-
     public void saveData(MyWater data) {
         MyLog.i(TAG, "saveData()");
         if (data != null) {
             DBInsertAsyncTask task = new DBInsertAsyncTask();
             task.execute(data);
         }
+    }
+
+    public void getDringkingDataByDate(String date, AsyncQueryResultListener listener) {
+        DBSelectAsyncTask task = new DBSelectAsyncTask(date, listener);
+        task.execute();
     }
 
     private void insertData(MyWater myWater) {
@@ -142,12 +143,14 @@ public class DBManager implements DBConstants {
 
         Cursor cursor = null;
 
+        List<MyWater> list = new ArrayList<MyWater>();
+
         // TODO select last data
         SQLiteDatabase db = null;
         try {
 
             db = mDBHelper.getReadableDatabase();
-
+            db.beginTransaction();
             if (date == null || date.isEmpty()) {
                 cursor = db.query(TABLE_NAME, null, null, null,
                         null, null, null);
@@ -157,22 +160,27 @@ public class DBManager implements DBConstants {
                         null, null, null);
             }
 
+
             if (cursor == null && cursor.getCount() < 1) {
-                MyLog.d(TAG, mContext.getString(R.string.warning_no_date));
+                MyLog.d(TAG, mContext.getString(R.string.warning_no_data));
                 return null;
             }
+            list = convertCursorToList(cursor);
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
             if (db != null) {
+                db.endTransaction();
                 db.close();
             }
         }
 
-        return convertCursorToList(cursor);
+        return list;
     }
 
     private List<MyWater> convertCursorToList(Cursor cursor) {
+        if (cursor == null || cursor.getCount() < 1) return null;
+
         List<MyWater> list = new ArrayList<MyWater>(cursor.getCount());
 
         MyWater water = null;
@@ -216,10 +224,12 @@ public class DBManager implements DBConstants {
 
     private class DBSelectAsyncTask extends AsyncTask<Void, Void, List<MyWater>> {
 
+        AsyncQueryResultListener listener;
         private String date;
 
-        public DBSelectAsyncTask(String date) {
+        public DBSelectAsyncTask(String date, AsyncQueryResultListener l) {
             this.date = date;
+            listener = l;
         }
 
         @Override
@@ -230,8 +240,8 @@ public class DBManager implements DBConstants {
         @Override
         protected void onPostExecute(List<MyWater> list) {
             super.onPostExecute(list);
-            if (mAsyncQueryResultListener != null) {
-                mAsyncQueryResultListener.onQueryResult(list);
+            if (listener != null) {
+                listener.onQueryResult(list);
             }
         }
     };

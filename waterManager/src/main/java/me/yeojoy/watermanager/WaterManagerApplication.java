@@ -14,6 +14,8 @@ public class WaterManagerApplication extends Application implements Consts {
 
     public static int DAILY_GOAL_WATER_QUANTITY = 0;
 
+    public static boolean QUANTITY_MODE = true;
+
     @Override
     public void onCreate() {
         super.onCreate();

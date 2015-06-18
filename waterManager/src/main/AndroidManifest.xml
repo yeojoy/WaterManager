@@ -29,10 +29,13 @@
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
 			</intent-filter>
 			<intent-filter>
-				<action android:name="me.yeojoy.action.PLUS"/>
+				<action android:name="me.yeojoy.action.BIG_CUP"/>
 			</intent-filter>
             <intent-filter>
-				<action android:name="me.yeojoy.action.MINUS"/>
+				<action android:name="me.yeojoy.action.MEDIUM_CUP"/>
+			</intent-filter>
+            <intent-filter>
+				<action android:name="me.yeojoy.action.SMALL_CUP"/>
 			</intent-filter>
 			<meta-data
 				android:name="android.appwidget.provider"

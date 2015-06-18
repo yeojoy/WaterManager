@@ -3,18 +3,18 @@ package me.yeojoy.watermanager.config;
 
 public interface Consts {
     /** SharedPreferences name */
-    public static final String PREFS_NAME = "water_mgr";
+    String PREFS_NAME = "water_mgr";
     
     /** SharedPreferences key name */
-    public static final String PREFS_KEY_COUNTS = "w_counts";
+    String PREFS_KEY_COUNTS = "w_counts";
 
-    public static final String PREFS_KEY_DAILY_GOAL_QUANTITY = "quantity";
+    String PREFS_KEY_DAILY_GOAL_QUANTITY = "quantity";
     
-    public static final String PLUS_ACTION  = "me.yeojoy.action.PLUS";
-    public static final String MINUS_ACTION = "me.yeojoy.action.MINUS";
+    String BIG_CUP_ACTION = "me.yeojoy.action.BIG_CUP";
+    String MEDIUM_CUP_ACTION = "me.yeojoy.action.MEDIUM_CUP";
+    String SMALL_CUP_ACTION = "me.yeojoy.action.SMALL_CUP";
 
-    public static final float ONE_SHOT = 12.5f;
-    
-    public static final int PLUS_ID     = 0x000010;
-    public static final int MINUS_ID    = 0x000001;
+    int BIG_CUP_ID      = 0x000111;
+    int MEDIUM_CUP_ID   = 0x000011;
+    int SMALL_CUP_ID    = 0x000001;
 }
