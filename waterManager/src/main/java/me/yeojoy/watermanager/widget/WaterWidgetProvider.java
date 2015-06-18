@@ -31,7 +31,6 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
     private static final int MEDIUM_CUP = 250;
     private static final int BIG_CUP = 500;
 
-
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
@@ -93,8 +92,9 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
         if (myWater != null) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.water_widget);
             DBManager.getInstance(context).saveData(myWater);
-            Toast.makeText(context, myWater.toString(), Toast.LENGTH_SHORT).show();
-            WaterWidgetViewManager.getInstance(context).setWidgetViews(context, views, null, -1);
+
+            WaterWidgetViewManager.getInstance(context).setWidgetViews(context, views,
+                    AppWidgetManager.getInstance(context), -1);
         }
     }
 }

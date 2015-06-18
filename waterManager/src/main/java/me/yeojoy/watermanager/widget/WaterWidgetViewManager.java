@@ -16,6 +16,7 @@ import me.yeojoy.watermanager.WaterManagerApplication;
 import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.db.AsyncQueryResultListener;
 import me.yeojoy.watermanager.db.DBManager;
+import me.yeojoy.watermanager.manager.DataManager;
 import me.yeojoy.watermanager.model.MyWater;
 import my.lib.MyLog;
 
@@ -58,14 +59,8 @@ public class WaterWidgetViewManager implements Consts {
      * @param widgetId
      */
     public void setWidgetViews(final Context context, final RemoteViews views,
-                                      AppWidgetManager appWidgetManager, int widgetId) {
+                              final AppWidgetManager appWidgetManager, final int widgetId) {
         MyLog.i(TAG, "setWidgetViews()");
-        // View가 업데이트 됐음을 알린다.
-        if (appWidgetManager == null) {
-            appWidgetManager = AppWidgetManager.getInstance(context);
-        }
-
-        MyLog.d(TAG, "setWidgetViews(), count is " + WaterManagerApplication.COUNT);
 
         // PendingIntent의 requestCode가 같아지면 바로 가장 마지막 PendingIntent의
         // Intent로 강제 update되는 사태가 발생함.
@@ -87,38 +82,53 @@ public class WaterWidgetViewManager implements Consts {
 
         final String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        if (WaterManagerApplication.QUANTITY_MODE) {
 
-            DBManager.getInstance(context).getDringkingDataByDate(today,
-                    new AsyncQueryResultListener() {
-                @Override
-                public void onQueryResult(List<MyWater> myWaterResult) {
-                    String result = String.format("%d ml",
-                            getTodayDrinkingWaterQuantity(today,
-                                    myWaterResult));
+        DBManager.getInstance(context).getDringkingDataByDate(today,
+                new AsyncQueryResultListener() {
+            @Override
+            public void onQueryResult(List<MyWater> myWaterResult) {
+                MyLog.i(TAG, "onQueryResult()");
 
-                    if (result != null && !result.isEmpty()) {
-                        views.setTextViewText(R.id.tv_today_quantity, result);
-                    }
+                Intent smallCupIntent = new Intent(SMALL_CUP_ACTION);
+                PendingIntent smallCupPendingIntent = PendingIntent.getBroadcast(context,
+                        SMALL_CUP_ID, smallCupIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                Intent mediumCupIntent = new Intent(MEDIUM_CUP_ACTION);
+                PendingIntent mediumCupPendingIntent = PendingIntent.getBroadcast(context,
+                        MEDIUM_CUP_ID, mediumCupIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                Intent bigCupIntent = new Intent(BIG_CUP_ACTION);
+                PendingIntent bigCupPendingIntent = PendingIntent.getBroadcast(context,
+                        BIG_CUP_ID, bigCupIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                views.setOnClickPendingIntent(R.id.btn_small, smallCupPendingIntent);
+                views.setOnClickPendingIntent(R.id.btn_medium, mediumCupPendingIntent);
+                views.setOnClickPendingIntent(R.id.btn_big, bigCupPendingIntent);
+
+                String quantity = String.format("%dml",
+                        DataManager.getInstance(context)
+                                .getTodayDrinkingWaterQuantity(today, myWaterResult));
+
+                if (quantity != null && !quantity.isEmpty()) {
+                    views.setTextViewText(R.id.tv_today_quantity, quantity);
                 }
-            });
-        } else {
 
-            DBManager.getInstance(context).getDringkingDataByDate(today,
-                    new AsyncQueryResultListener() {
-                @Override
-                public void onQueryResult(List<MyWater> myWaterResult) {
-                    String result = String.format("%d %",
-                            getTodayDrinkingWaterPercentage(today,
-                                    myWaterResult));
+                String percent = DataManager.getInstance(context)
+                                .getTodayDrinkingWaterPercentage(today, myWaterResult) + "%";
 
-                    if (result != null && !result.isEmpty()) {
-                        views.setTextViewText(R.id.tv_today_quantity, result);
-                    }
+                if (percent != null && !percent.isEmpty()) {
+                    views.setTextViewText(R.id.tv_today_percentage, percent);
                 }
-            });
 
-        }
+                // Tell the AppWidgetManager to perform an update on the current app widget
+                if (widgetId != -1) {
+                    appWidgetManager.updateAppWidget(widgetId, views);
+                } else {
+                    ComponentName myWidget = new ComponentName(context, WaterWidgetProvider.class);
+                    appWidgetManager.updateAppWidget(myWidget, views);
+                }
+            }
+        });
 
         // Tell the AppWidgetManager to perform an update on the current app widget
         if (widgetId != -1) {
@@ -127,29 +137,5 @@ public class WaterWidgetViewManager implements Consts {
             ComponentName myWidget = new ComponentName(context, WaterWidgetProvider.class);
             appWidgetManager.updateAppWidget(myWidget, views);
         }
-    }
-
-    private int getTodayDrinkingWaterQuantity(String today, List<MyWater> water) {
-        if (water == null && water.size() < 1) return 0;
-
-        int quantity = 0;
-        for (MyWater w : water) {
-            if (w.getDrinkingDate().equals(today)) {
-                quantity += w.getDrinkingQuantity();
-            }
-        }
-
-        return quantity;
-    }
-
-    private int getTodayDrinkingWaterPercentage(String today, List<MyWater> water) {
-        if (water == null && water.size() < 1) return 0;
-
-        int percent = 0;
-        int quantity = getTodayDrinkingWaterQuantity(today, water);
-
-        percent = quantity / WaterManagerApplication.DAILY_GOAL_WATER_QUANTITY * 100;
-
-        return percent;
     }
 }

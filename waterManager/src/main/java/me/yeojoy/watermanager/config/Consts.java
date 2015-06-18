@@ -14,7 +14,8 @@ public interface Consts {
     String MEDIUM_CUP_ACTION = "me.yeojoy.action.MEDIUM_CUP";
     String SMALL_CUP_ACTION = "me.yeojoy.action.SMALL_CUP";
 
-    int BIG_CUP_ID      = 0x000111;
-    int MEDIUM_CUP_ID   = 0x000011;
-    int SMALL_CUP_ID    = 0x000001;
+    int BIG_CUP_ID          = 0x000111;
+    int MEDIUM_CUP_ID       = 0x000011;
+    int SMALL_CUP_ID        = 0x000001;
+
 }

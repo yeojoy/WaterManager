@@ -11,14 +11,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import my.lib.MyLog;
 
-public class WaterActivity extends Activity {
+public class WaterActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = WaterActivity.class.getSimpleName();
 
     private Context mContext;
+
+    private Button mBtnTheDayBefore, mBtnTheDayAfter;
+
+    private TextView mTvDate, mTvNoData;
+
+    private ListView mLvList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +37,9 @@ public class WaterActivity extends Activity {
         setContentView(R.layout.activity_water);
 
         mContext = this;
+
+
+
     }
 
     @Override
@@ -51,5 +65,10 @@ public class WaterActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 70 * n - 30 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-	android:minWidth="280dp"
+	android:minWidth="@dimen/app_widget_min_width"
 	android:minHeight="40dp"
 	android:initialLayout="@layout/water_widget"
 	android:resizeMode="horizontal|vertical"
