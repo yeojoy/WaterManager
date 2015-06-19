@@ -38,7 +38,8 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
     }
     
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
         MyLog.i(TAG, "onUpdate()");
         final int widgetCount = appWidgetIds.length;
 
@@ -48,8 +49,8 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     R.layout.water_widget);
 
-            WaterWidgetViewManager.getInstance(context)
-                    .setWidgetViews(context, views, appWidgetManager, appWidgetIds[i]);
+            WaterWidgetViewManager.setWidgetViews(context, views,
+                    appWidgetManager, appWidgetIds[i]);
         }
     }
 
@@ -68,7 +69,8 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
             MyLog.d(TAG, "======================================================");
             while (i.hasNext()) {
                 String key = i.next();
-                MyLog.d(TAG, "key : " + key + ", value : " + String.valueOf(bundle.get(key)));
+                MyLog.d(TAG, "key : " + key + ", value : "
+                        + String.valueOf(bundle.get(key)));
             }
             MyLog.d(TAG, "======================================================");
         }
@@ -90,11 +92,12 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
         }
 
         if (myWater != null) {
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.water_widget);
+            RemoteViews views = new RemoteViews(context.getPackageName(),
+                    R.layout.water_widget);
             DBManager.getInstance(context).saveData(myWater);
 
-            WaterWidgetViewManager.getInstance(context).setWidgetViews(context, views,
-                    AppWidgetManager.getInstance(context), -1);
+            WaterWidgetViewManager.setWidgetViews(context,
+                    views, AppWidgetManager.getInstance(context), -1);
         }
     }
 }

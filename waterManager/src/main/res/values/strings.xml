@@ -8,6 +8,9 @@
 	<string name="btn_small">150</string>
 	<string name="btn_medium">250</string>
 	<string name="btn_big">500</string>
+	<string name="btn_edit">수정</string>
+	<string name="btn_edit_clicked">완료</string>
+	<string name="btn_delete">삭제</string>
 
 	<string name="cd_text_bg">Text Background Color</string>
 

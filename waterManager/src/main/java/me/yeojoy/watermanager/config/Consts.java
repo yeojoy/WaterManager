@@ -4,7 +4,10 @@ package me.yeojoy.watermanager.config;
 public interface Consts {
     /** SharedPreferences name */
     String PREFS_NAME = "water_mgr";
-    
+
+    String DATE_FORMAT = "yyyy-MM-dd";
+    String TIME_FORMAT = "HH:mm:ss";
+
     /** SharedPreferences key name */
     String PREFS_KEY_COUNTS = "w_counts";
 
@@ -17,5 +20,7 @@ public interface Consts {
     int BIG_CUP_ID          = 0x000111;
     int MEDIUM_CUP_ID       = 0x000011;
     int SMALL_CUP_ID        = 0x000001;
+
+    int LAUNCH_APP_ID        = 0x100001;
 
 }

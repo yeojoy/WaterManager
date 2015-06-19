@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import me.yeojoy.watermanager.R;
-import me.yeojoy.watermanager.WaterManagerApplication;
+import me.yeojoy.watermanager.WaterActivity;
 import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.db.AsyncQueryResultListener;
 import me.yeojoy.watermanager.db.DBManager;
@@ -26,27 +26,6 @@ import my.lib.MyLog;
 public class WaterWidgetViewManager implements Consts {
     private static final String TAG = WaterWidgetViewManager.class.getSimpleName();
 
-    private static int[] colorList = {
-            R.color.first, R.color.second, R.color.third, R.color.fourth,
-            R.color.fifth, R.color.sixth, R.color.seventh, R.color.eighth, R.color.nineth
-    };
-
-    private static WaterWidgetViewManager mManager;
-
-    private Context mContext;
-
-    public WaterWidgetViewManager(Context context) {
-        mContext = context;
-    }
-
-    public static WaterWidgetViewManager getInstance(Context context) {
-        if (mManager == null) {
-            mManager = new WaterWidgetViewManager(context);
-        }
-
-        return mManager;
-    }
-
     /**
      * onReceive, onUpdate, Configuration Activity에서
      * AppWidgetManager.updateAppWidget()을 호출하므로 여기 한 곳으로 몰아서\
@@ -58,27 +37,33 @@ public class WaterWidgetViewManager implements Consts {
      * @param appWidgetManager
      * @param widgetId
      */
-    public void setWidgetViews(final Context context, final RemoteViews views,
+    public static void setWidgetViews(final Context context, final RemoteViews views,
                               final AppWidgetManager appWidgetManager, final int widgetId) {
         MyLog.i(TAG, "setWidgetViews()");
 
         // PendingIntent의 requestCode가 같아지면 바로 가장 마지막 PendingIntent의
         // Intent로 강제 update되는 사태가 발생함.
-        Intent smallCupIntent = new Intent(SMALL_CUP_ACTION);
-        PendingIntent smallCupPendingIntent = PendingIntent.getBroadcast(context,
-                SMALL_CUP_ID, smallCupIntent, PendingIntent.FLAG_ONE_SHOT);
+        final Intent smallCupIntent = new Intent(SMALL_CUP_ACTION);
+        final PendingIntent smallCupPendingIntent = PendingIntent.getBroadcast(context,
+                SMALL_CUP_ID, smallCupIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent mediumCupIntent = new Intent(MEDIUM_CUP_ACTION);
-        PendingIntent mediumCupPendingIntent = PendingIntent.getBroadcast(context,
-                MEDIUM_CUP_ID, mediumCupIntent, PendingIntent.FLAG_ONE_SHOT);
+        final Intent mediumCupIntent = new Intent(MEDIUM_CUP_ACTION);
+        final PendingIntent mediumCupPendingIntent = PendingIntent.getBroadcast(context,
+                MEDIUM_CUP_ID, mediumCupIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent bigCupIntent = new Intent(BIG_CUP_ACTION);
-        PendingIntent bigCupPendingIntent = PendingIntent.getBroadcast(context,
-                BIG_CUP_ID, bigCupIntent, PendingIntent.FLAG_ONE_SHOT);
+        final Intent bigCupIntent = new Intent(BIG_CUP_ACTION);
+        final PendingIntent bigCupPendingIntent = PendingIntent.getBroadcast(context,
+                BIG_CUP_ID, bigCupIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final Intent launchAppIntent = new Intent(context, WaterActivity.class);
+        final PendingIntent launchAppPendingIntent = PendingIntent.getActivity(context,
+                LAUNCH_APP_ID, launchAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         views.setOnClickPendingIntent(R.id.btn_small, smallCupPendingIntent);
         views.setOnClickPendingIntent(R.id.btn_medium, mediumCupPendingIntent);
         views.setOnClickPendingIntent(R.id.btn_big, bigCupPendingIntent);
+        views.setOnClickPendingIntent(R.id.ll_display, launchAppPendingIntent);
+
 
         final String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -89,21 +74,14 @@ public class WaterWidgetViewManager implements Consts {
             public void onQueryResult(List<MyWater> myWaterResult) {
                 MyLog.i(TAG, "onQueryResult()");
 
-                Intent smallCupIntent = new Intent(SMALL_CUP_ACTION);
-                PendingIntent smallCupPendingIntent = PendingIntent.getBroadcast(context,
-                        SMALL_CUP_ID, smallCupIntent, PendingIntent.FLAG_ONE_SHOT);
-
-                Intent mediumCupIntent = new Intent(MEDIUM_CUP_ACTION);
-                PendingIntent mediumCupPendingIntent = PendingIntent.getBroadcast(context,
-                        MEDIUM_CUP_ID, mediumCupIntent, PendingIntent.FLAG_ONE_SHOT);
-
-                Intent bigCupIntent = new Intent(BIG_CUP_ACTION);
-                PendingIntent bigCupPendingIntent = PendingIntent.getBroadcast(context,
-                        BIG_CUP_ID, bigCupIntent, PendingIntent.FLAG_ONE_SHOT);
+                if (myWaterResult == null || myWaterResult.size() < 1) {
+                    return;
+                }
 
                 views.setOnClickPendingIntent(R.id.btn_small, smallCupPendingIntent);
                 views.setOnClickPendingIntent(R.id.btn_medium, mediumCupPendingIntent);
                 views.setOnClickPendingIntent(R.id.btn_big, bigCupPendingIntent);
+                views.setOnClickPendingIntent(R.id.ll_display, launchAppPendingIntent);
 
                 String quantity = String.format("%dml",
                         DataManager.getInstance(context)

@@ -7,43 +7,43 @@ import me.yeojoy.watermanager.BuildConfig;
 
 
 public interface DBConstants {
-    public static final String DB_NAME = "my_water.db";
-    public static final int DB_VERSION = 1;
+    String DB_NAME = "my_water.db";
+    int DB_VERSION = 1;
 
-    public static final String TABLE_NAME = "WATER_MNG";
+    String TABLE_NAME = "WATER_MNG";
     
-    public static final String ID               = BaseColumns._ID;
-    public static final String DATE             = "DATE";
-    public static final String TIME             = "TIME";
-    public static final String QUANTITY         = "QUANTITY";
+    String IDX = BaseColumns._ID;
+    String DATE             = "DATE";
+    String TIME             = "TIME";
+    String QUANTITY         = "QUANTITY";
 
-    public static final int INDEX_ID               = 0;
-    public static final int INDEX_DATE             = 1;
-    public static final int INDEX_TIME             = 2;
-    public static final int INDEX_QUANTITY         = 3;
+    int INDEX_ID               = 0;
+    int INDEX_DATE             = 1;
+    int INDEX_TIME             = 2;
+    int INDEX_QUANTITY         = 3;
 
     // CursorLoader
-    public static final int AIR_QUALITY_INDEX_CURSOR_LOADER = 1212;
+    int AIR_QUALITY_INDEX_CURSOR_LOADER = 1212;
 
-    public static final String[] PROJECTION = {
+    String[] PROJECTION = {
 
     };
 
-    public static final String SELECTION = DATE + " = ?";
+    String SELECTION = DATE + " = ?";
 
     // The URI scheme used for content URIs
-    public static final String SCHEME = "content";
+    String SCHEME = "content";
 
     // The provider's authority
-    public static final String AUTHORITY = BuildConfig.APPLICATION_ID;
+    String AUTHORITY = BuildConfig.APPLICATION_ID;
 
     /**
      * The DataProvider content URI
      */
-    public static final Uri CONTENT_URI = Uri.parse(SCHEME + "://" + AUTHORITY);
+    Uri CONTENT_URI = Uri.parse(SCHEME + "://" + AUTHORITY);
 
-    public static final Uri AIR_QUALITY_SELECT_ALL_QUERY_URI =
+    Uri WATER_QUANTITY_SELECT_ALL_QUERY_URI =
             Uri.withAppendedPath(CONTENT_URI, TABLE_NAME);
 
-    public static final String CONTENT_TYPE = "vnd.watermanager.yeojoy.me.cursor.dir/" + TABLE_NAME;
+    String CONTENT_TYPE = "vnd.watermanager.yeojoy.me.cursor.dir/" + TABLE_NAME;
 }

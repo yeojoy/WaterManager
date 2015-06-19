@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper implements DBConstants {
         StringBuilder sb = new StringBuilder();
 
         sb.append("CREATE TABLE ").append(TABLE_NAME).append(" ( ");
-        sb.append(ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sb.append(IDX).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
         sb.append(DATE).append(" TEXT, ");             // 저장시각
         sb.append(TIME).append(" TEXT, ");             // 시도 이름
         sb.append(QUANTITY).append(" INTEGER").append(" );");

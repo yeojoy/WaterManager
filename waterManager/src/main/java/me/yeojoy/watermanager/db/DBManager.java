@@ -54,6 +54,17 @@ public class DBManager implements DBConstants {
         task.execute();
     }
 
+    public void updateDrinkingWater(MyWater water) {
+        DBUpdateAsyncTask task = new DBUpdateAsyncTask(water);
+        task.execute();
+    }
+
+    public void deleteDrikingWater(int id) {
+        DBDeleteAsyncTask task = new DBDeleteAsyncTask(id);
+        task.execute();
+
+    }
+
     private void insertData(MyWater myWater) {
         MyLog.i(TAG, "insertData()");
         
@@ -178,6 +189,87 @@ public class DBManager implements DBConstants {
         return list;
     }
 
+    /**
+     * id 와 MyWater object를 받아서 물 마신양을 update 해줌.
+     * @param water
+     * @return
+     */
+    private int updateMyWater(MyWater water) {
+        MyLog.i(TAG, "updateMyWater()");
+        int count = 0;
+
+        // TODO select last data
+        SQLiteDatabase db = null;
+        try {
+
+            db = mDBHelper.getWritableDatabase();
+            db.beginTransaction();
+
+            ContentValues values = new ContentValues();
+            MyLog.d(TAG, "update quantity : " + water.getDrinkingQuantity());
+            values.put(QUANTITY, water.getDrinkingQuantity());
+
+            count = db.update(TABLE_NAME, values,
+                    IDX + " = ?", new String[] {String.valueOf(water.getId())});
+
+
+            if (BuildConfig.DEBUG) {
+                Cursor c = db.query(TABLE_NAME, null, IDX + " = ?", new String[] {String.valueOf(water.getId())}, null, null, null);
+                if (c != null) {
+                    c.moveToFirst();
+
+                    MyWater w = new MyWater(c.getInt(INDEX_ID),
+                            c.getString(INDEX_DATE),
+                            c.getString(INDEX_TIME),
+                            c.getInt(INDEX_QUANTITY));
+
+                    MyLog.d(TAG, "after update(), MyWater obj : " + w.toString());
+                }
+            }
+
+        } catch (SQLiteException e) {
+            MyLog.e(TAG, e.getMessage());
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * id에 해당하는 data를 삭제
+     * @param id
+     * @return
+     */
+    private int deleteMyWater(int id) {
+        MyLog.i(TAG, "deleteMyWater()");
+        int count = 0;
+
+        // TODO select last data
+        SQLiteDatabase db = null;
+        try {
+
+            db = mDBHelper.getWritableDatabase();
+            db.beginTransaction();
+
+            count = db.delete(TABLE_NAME,
+                    IDX + " = ?", new String[] {String.valueOf(id)});
+
+        } catch (SQLiteException e) {
+            MyLog.e(TAG, e.getMessage());
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+
+        return count;
+    }
+
     private List<MyWater> convertCursorToList(Cursor cursor) {
         if (cursor == null || cursor.getCount() < 1) return null;
 
@@ -192,6 +284,12 @@ public class DBManager implements DBConstants {
                     cursor.getInt(INDEX_QUANTITY));
             list.add(water);
         } while (cursor.moveToNext());
+
+        MyLog.d(TAG, "=====================================================");
+        for (MyWater w : list) {
+            MyLog.d(TAG, w.toString());
+        }
+        MyLog.d(TAG, "=====================================================");
 
         return list;
     }
@@ -234,6 +332,7 @@ public class DBManager implements DBConstants {
 
         @Override
         protected List<MyWater> doInBackground(Void... params) {
+            MyLog.i(TAG, "DBSelectAsyncTask, doInBackground()");
             return selectMyWater(date);
         }
 
@@ -241,8 +340,61 @@ public class DBManager implements DBConstants {
         protected void onPostExecute(List<MyWater> list) {
             super.onPostExecute(list);
             if (listener != null) {
+                if (list != null)
+                    MyLog.d(TAG, "DBSelectAsyncTask, list size is " + list.size());
                 listener.onQueryResult(list);
             }
         }
-    };
+    }
+
+    private class DBUpdateAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        private MyWater mWater;
+
+        public DBUpdateAsyncTask(MyWater water) {
+            mWater = water;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            MyLog.i(TAG, "DBUpdateAsyncTask, doInBackground()");
+            return updateMyWater(mWater);
+        }
+
+        @Override
+        protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+
+            if (count > 0) {
+                MyLog.d(TAG, "DBUpdateAsyncTask, " + count + "개의 data update.");
+            } else {
+                MyLog.d(TAG, "DBUpdateAsyncTask, no data update.");
+            }
+        }
+    }
+
+    private class DBDeleteAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        private int id;
+
+        public DBDeleteAsyncTask(int id) {
+            this.id = id;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            MyLog.i(TAG, "DBDeleteAsyncTask, doInBackground()");
+            return deleteMyWater(id);
+        }
+
+        @Override
+        protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+            if (count > 0) {
+                MyLog.d(TAG, "DBDeleteAsyncTask, " + count + "개의 data delete.");
+            } else {
+                MyLog.d(TAG, "DBDeleteAsyncTask, no data delete.");
+            }
+        }
+    }
 }

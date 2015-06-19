@@ -57,7 +57,7 @@ public class WaterConfiguration extends Activity implements Consts,
         
         Intent intent = getIntent();
         
-        // First, get the App Widget ID from the Intent that launched the Activity:
+        // First, get the App Widget IDX from the Intent that launched the Activity:
         Bundle extras = intent.getExtras();
         if (extras != null) {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, 
@@ -144,7 +144,7 @@ public class WaterConfiguration extends Activity implements Consts,
                 // 불가피하게 Provider 내에 setWidgetViews를 static으로 변경하고
                 // 여기에서도 호출하게 함.
                 // 설정한 내용을 적용할 땐 뭔가 model로 넘겨주면 된다.
-                WaterWidgetViewManager.getInstance(this).setWidgetViews(mContext, views,
+                WaterWidgetViewManager.setWidgetViews(mContext, views,
                         appWidgetManager, mAppWidgetId);
                 MyLog.i(TAG, "onCreate(), App Widget ID is valid.");
             }

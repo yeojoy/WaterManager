@@ -2,36 +2,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
 	android:background="@drawable/widget_bg">
-	
-	<TextView
-		android:id="@+id/tv_today_quantity"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="5dp"
-		android:layout_centerVertical="true"
-		android:layout_alignParentLeft="true"
-        android:textColor="@android:color/black"
-        android:textSize="22dp"
-        android:gravity="center" />
 
-	<TextView
-		android:id="@+id/tv_today_percentage"
+	<LinearLayout
+		android:id="@+id/ll_display"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/tv_today_quantity"
-		android:layout_alignLeft="@id/tv_today_quantity"
-		android:layout_alignRight="@id/tv_today_quantity"
-		android:textColor="@android:color/black"
-		android:textSize="13dp"
-		android:gravity="center" />
+		android:layout_marginLeft="12dp"
+		android:orientation="vertical"
+		android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+        android:gravity="center_horizontal">
+		<TextView
+			android:id="@+id/tv_today_quantity"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/black"
+			android:textSize="22dp"
+			android:gravity="center" />
+
+		<TextView
+			android:id="@+id/tv_today_percentage"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="3dp"
+			android:layout_below="@id/tv_today_quantity"
+			android:layout_alignLeft="@id/tv_today_quantity"
+			android:layout_alignRight="@id/tv_today_quantity"
+
+			android:textColor="@android:color/black"
+			android:textSize="13dp"
+			android:gravity="center" />
+
+	</LinearLayout>
 
 	<Button
 		android:id="@+id/btn_small"
 		android:layout_width="64dp"
 		android:layout_height="64dp"
-		android:layout_alignTop="@id/tv_today_quantity"
+		android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/btn_medium"
 		android:paddingLeft="2dp"
 		android:paddingRight="2dp"
@@ -41,7 +50,7 @@
 		android:id="@id/btn_medium"
 		android:layout_width="64dp"
 		android:layout_height="64dp"
-        android:layout_alignTop="@id/tv_today_quantity"
+        android:layout_alignTop="@id/btn_small"
         android:layout_toLeftOf="@+id/btn_big"
         android:layout_marginLeft="5dp"
 		android:paddingLeft="2dp"
@@ -52,7 +61,7 @@
 		android:id="@id/btn_big"
 		android:layout_width="64dp"
 		android:layout_height="64dp"
-        android:layout_alignTop="@id/tv_today_quantity"
+        android:layout_alignTop="@id/btn_medium"
 		android:layout_marginRight="5dp"
 		android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
