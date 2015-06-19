@@ -34,7 +34,7 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
 
     private Button mBtnTheDayBefore, mBtnTheDayAfter;
 
-    private TextView mTvDate, mTvNoData;
+    private TextView mTvDate, mTvNoData, mTvDailyTotal;
 
     private ListView mLvList;
 
@@ -59,6 +59,7 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
 
         mTvDate = (TextView) findViewById(R.id.tv_date);
         mTvNoData = (TextView) findViewById(R.id.tv_no_data);
+        mTvDailyTotal = (TextView) findViewById(R.id.tv_daily_total);
 
         mLvList = (ListView) findViewById(R.id.lv_list);
 
@@ -150,14 +151,33 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
                 if (mMyWaterList == null || mMyWaterList.size() < 1) {
                     mTvNoData.setVisibility(View.VISIBLE);
                     mLvList.setVisibility(View.GONE);
+                    showTotalQuantity(null);
                 } else {
                     mTvNoData.setVisibility(View.GONE);
                     mLvList.setVisibility(View.VISIBLE);
                     mAdapter.setMyWaterList(mMyWaterList);
+                    showTotalQuantity(mMyWaterList);
                 }
 
             }
         });
+    }
+
+    public void showTotalQuantity(List<MyWater> mMyWaterList) {
+        MyLog.i(TAG, "showTotalQuantity()");
+        int quantity = 0;
+
+        if (mMyWaterList == null || mMyWaterList.size() < 1) {
+            mTvDailyTotal.setText("");
+            return;
+        }
+
+        for (MyWater w : mMyWaterList) {
+            quantity += w.getDrinkingQuantity();
+        }
+
+        if (quantity > 0)
+            mTvDailyTotal.setText(String.format("%dml", quantity));
     }
 
     /**

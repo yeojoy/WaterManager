@@ -59,8 +59,8 @@ public class DBManager implements DBConstants {
         task.execute();
     }
 
-    public void deleteDrikingWater(int id) {
-        DBDeleteAsyncTask task = new DBDeleteAsyncTask(id);
+    public void deleteDrinkingWater(MyWater water) {
+        DBDeleteAsyncTask task = new DBDeleteAsyncTask(water);
         task.execute();
 
     }
@@ -177,11 +177,12 @@ public class DBManager implements DBConstants {
                 return null;
             }
             list = convertCursorToList(cursor);
+
+            db.endTransaction();
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
             if (db != null) {
-                db.endTransaction();
                 db.close();
             }
         }
@@ -212,7 +213,6 @@ public class DBManager implements DBConstants {
             count = db.update(TABLE_NAME, values,
                     IDX + " = ?", new String[] {String.valueOf(water.getId())});
 
-
             if (BuildConfig.DEBUG) {
                 Cursor c = db.query(TABLE_NAME, null, IDX + " = ?", new String[] {String.valueOf(water.getId())}, null, null, null);
                 if (c != null) {
@@ -227,11 +227,11 @@ public class DBManager implements DBConstants {
                 }
             }
 
+            db.endTransaction();
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
             if (db != null) {
-                db.endTransaction();
                 db.close();
             }
         }
@@ -241,28 +241,27 @@ public class DBManager implements DBConstants {
 
     /**
      * id에 해당하는 data를 삭제
-     * @param id
+     * @param water
      * @return
      */
-    private int deleteMyWater(int id) {
+    private int deleteMyWater(MyWater water) {
         MyLog.i(TAG, "deleteMyWater()");
         int count = 0;
 
-        // TODO select last data
         SQLiteDatabase db = null;
         try {
-
+            MyLog.d(TAG, "deleteMyWater(), MyWater obj : " + water.toString());
             db = mDBHelper.getWritableDatabase();
             db.beginTransaction();
 
             count = db.delete(TABLE_NAME,
-                    IDX + " = ?", new String[] {String.valueOf(id)});
+                    IDX + " = ?", new String[] {String.valueOf(water.getId())});
 
+            db.endTransaction();
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
             if (db != null) {
-                db.endTransaction();
                 db.close();
             }
         }
@@ -375,16 +374,16 @@ public class DBManager implements DBConstants {
 
     private class DBDeleteAsyncTask extends AsyncTask<Void, Void, Integer> {
 
-        private int id;
+        private MyWater water;
 
-        public DBDeleteAsyncTask(int id) {
-            this.id = id;
+        public DBDeleteAsyncTask(MyWater water) {
+            this.water = water;
         }
 
         @Override
         protected Integer doInBackground(Void... params) {
             MyLog.i(TAG, "DBDeleteAsyncTask, doInBackground()");
-            return deleteMyWater(id);
+            return deleteMyWater(water);
         }
 
         @Override

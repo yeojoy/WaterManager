@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yeojoy.watermanager.R;
+import me.yeojoy.watermanager.WaterActivity;
 import me.yeojoy.watermanager.db.DBManager;
 import me.yeojoy.watermanager.model.MyWater;
 import my.lib.MyLog;
@@ -70,44 +71,46 @@ public class WaterQuantityAdapter extends BaseAdapter {
             Button btnEdit = (Button) view.findViewById(R.id.btn_edit);
             Button btnDelete = (Button) view.findViewById(R.id.btn_delete);
             viewHolder = new ViewHolder(tvTime, etQuantity, btnEdit, btnDelete);
-
-            viewHolder.mBtnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (viewHolder.mBtnEdit.getText().toString()
-                            .equals(mContext.getText(R.string.btn_edit))) {
-                        viewHolder.mEtQuantity.setEnabled(true);
-                        viewHolder.mEtQuantity.setSelection(viewHolder.mEtQuantity.getText().toString().length());
-                        viewHolder.mBtnEdit.setText(R.string.btn_edit_clicked);
-                    } else {
-                        MyWater water = getItem(position);
-                        MyLog.d(TAG, "before : " + water.toString());
-                        water.setDrinkingQuantity(Integer.parseInt(viewHolder.mEtQuantity.getText().toString()));
-                        MyLog.d(TAG, "after : " + water.toString());
-                        updateDrinkingWater(water);
-
-                        viewHolder.mEtQuantity.setEnabled(false);
-                        viewHolder.mBtnEdit.setText(R.string.btn_edit);
-
-
-                    }
-                }
-            });
-
-            viewHolder.mBtnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyWater water = getItem(position);
-                    mMyWaterList.remove(water);
-                    deleteDrinkingWater(water);
-                }
-            });
-
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        MyWater water = getItem(position);
+
+        final MyWater water = getItem(position);
+
+        viewHolder.mBtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewHolder.mBtnEdit.getText().toString()
+                        .equals(mContext.getText(R.string.btn_edit))) {
+                    viewHolder.mEtQuantity.setEnabled(true);
+                    viewHolder.mEtQuantity.setSelection(viewHolder.mEtQuantity.getText().toString().length());
+                    viewHolder.mBtnEdit.setText(R.string.btn_edit_clicked);
+                } else {
+                    MyLog.d(TAG, "before : " + water.toString());
+                    water.setDrinkingQuantity(Integer.parseInt(viewHolder.mEtQuantity.getText().toString()));
+                    MyLog.d(TAG, "after : " + water.toString());
+                    updateDrinkingWater(water);
+
+                    ((WaterActivity) mContext).showTotalQuantity(mMyWaterList);
+
+                    viewHolder.mEtQuantity.setEnabled(false);
+                    viewHolder.mBtnEdit.setText(R.string.btn_edit);
+
+
+                }
+            }
+        });
+
+        viewHolder.mBtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMyWaterList.remove(water);
+                ((WaterActivity) mContext).showTotalQuantity(mMyWaterList);
+                deleteDrinkingWater(water);
+            }
+        });
+
         viewHolder.mEtQuantity.setText(String.valueOf(water.getDrinkingQuantity()));
         viewHolder.mTvTime.setText(water.getDrinkingTime());
 
@@ -141,12 +144,14 @@ public class WaterQuantityAdapter extends BaseAdapter {
     }
 
     private void updateDrinkingWater(MyWater water) {
+        if (water == null) return;
         DBManager.getInstance(mContext).updateDrinkingWater(water);
         notifyDataSetChanged();
     }
 
     private void deleteDrinkingWater(MyWater water) {
-        DBManager.getInstance(mContext).deleteDrikingWater(water.getId());
+        if (water == null) return;
+        DBManager.getInstance(mContext).deleteDrinkingWater(water);
         notifyDataSetChanged();
     }
 }
