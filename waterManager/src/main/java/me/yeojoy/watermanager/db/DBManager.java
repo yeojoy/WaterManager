@@ -13,6 +13,7 @@ import java.util.List;
 
 import me.yeojoy.watermanager.BuildConfig;
 import me.yeojoy.watermanager.R;
+import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.model.MyWater;
 import my.lib.MyLog;
 
@@ -29,14 +30,12 @@ public class DBManager implements DBConstants {
 
     public static DBManager getInstance(Context context) {
         if (mManager == null)
-            mManager = new DBManager();
+            mManager = new DBManager(context);
         
-        init(context); 
         return mManager;
     }
- 
-    private static void init(Context context) {
-        MyLog.i(TAG, "init()");
+
+    public DBManager(Context context) {
         mContext = context;
         mDBHelper = new DBHelper(mContext);
     }
@@ -214,20 +213,31 @@ public class DBManager implements DBConstants {
                     IDX + " = ?", new String[] {String.valueOf(water.getId())});
 
             if (BuildConfig.DEBUG) {
-                Cursor c = db.query(TABLE_NAME, null, IDX + " = ?", new String[] {String.valueOf(water.getId())}, null, null, null);
+                Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
                 if (c != null) {
                     c.moveToFirst();
+                    MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
+                    do {
+                        MyWater w = new MyWater(c.getInt(INDEX_ID),
+                                c.getString(INDEX_DATE),
+                                c.getString(INDEX_TIME),
+                                c.getInt(INDEX_QUANTITY));
 
-                    MyWater w = new MyWater(c.getInt(INDEX_ID),
-                            c.getString(INDEX_DATE),
-                            c.getString(INDEX_TIME),
-                            c.getInt(INDEX_QUANTITY));
+                        MyLog.d(TAG, "after update(), MyWater obj : " + w.toString());
 
-                    MyLog.d(TAG, "after update(), MyWater obj : " + w.toString());
+                    } while (c.moveToNext());
+                    MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
                 }
             }
 
+            if (count > 0) {
+                MyLog.d(TAG, "updating a row is successful.");
+            } else {
+                MyLog.d(TAG, "updating a row fails.");
+            }
             db.endTransaction();
+            MyLog.d(TAG, "update transaction ends.");
+
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
@@ -257,7 +267,31 @@ public class DBManager implements DBConstants {
             count = db.delete(TABLE_NAME,
                     IDX + " = ?", new String[] {String.valueOf(water.getId())});
 
+            if (BuildConfig.DEBUG) {
+                Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+                if (c != null) {
+                    c.moveToFirst();
+                    MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
+                    do {
+                        MyWater w = new MyWater(c.getInt(INDEX_ID),
+                                c.getString(INDEX_DATE),
+                                c.getString(INDEX_TIME),
+                                c.getInt(INDEX_QUANTITY));
+
+                        MyLog.d(TAG, "after delete(), MyWater obj : " + w.toString());
+
+                    } while (c.moveToNext());
+                    MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
+                }
+            }
+
+            if (count > 0) {
+                MyLog.d(TAG, "deleting a row is successful.");
+            } else {
+                MyLog.d(TAG, "deleting a row fails.");
+            }
             db.endTransaction();
+            MyLog.d(TAG, "delete transaction ends.");
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {

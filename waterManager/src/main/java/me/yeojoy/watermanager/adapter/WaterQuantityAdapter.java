@@ -16,6 +16,7 @@ import me.yeojoy.watermanager.R;
 import me.yeojoy.watermanager.WaterActivity;
 import me.yeojoy.watermanager.db.DBManager;
 import me.yeojoy.watermanager.model.MyWater;
+import me.yeojoy.watermanager.util.CommonUtils;
 import my.lib.MyLog;
 
 /**
@@ -84,6 +85,8 @@ public class WaterQuantityAdapter extends BaseAdapter {
                 if (viewHolder.mBtnEdit.getText().toString()
                         .equals(mContext.getText(R.string.btn_edit))) {
                     viewHolder.mEtQuantity.setEnabled(true);
+                    viewHolder.mEtQuantity.setFocusable(true);
+                    viewHolder.mEtQuantity.setFocusableInTouchMode(true);
                     viewHolder.mEtQuantity.setSelection(viewHolder.mEtQuantity.getText().toString().length());
                     viewHolder.mBtnEdit.setText(R.string.btn_edit_clicked);
                 } else {
@@ -95,6 +98,9 @@ public class WaterQuantityAdapter extends BaseAdapter {
                     ((WaterActivity) mContext).showTotalQuantity(mMyWaterList);
 
                     viewHolder.mEtQuantity.setEnabled(false);
+                    viewHolder.mEtQuantity.setFocusable(false);
+                    viewHolder.mEtQuantity.setFocusableInTouchMode(false);
+                    CommonUtils.hideKeyboard(mContext, viewHolder.mEtQuantity);
                     viewHolder.mBtnEdit.setText(R.string.btn_edit);
 
 

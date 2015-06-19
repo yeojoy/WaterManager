@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.yeojoy.watermanager.config.Consts;
+import me.yeojoy.watermanager.util.CommonUtils;
 import me.yeojoy.watermanager.util.PreferencesUtil;
 import me.yeojoy.watermanager.widget.WaterWidgetViewManager;
 import my.lib.MyLog;
@@ -199,7 +200,7 @@ public class WaterConfiguration extends Activity implements Consts,
             int age = 0;
             boolean isMale = false;
 
-            hideKeyboard();
+            CommonUtils.hideKeyboard(mContext, mEtUserAge);
 
             try {
                 age = Integer.parseInt(mEtUserAge.getText().toString());
@@ -257,12 +258,5 @@ public class WaterConfiguration extends Activity implements Consts,
             else mQuantityOfWater = 2000;
         }
         MyLog.d(TAG, "mQuantityOfWater : " + mQuantityOfWater);
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager imm =
-                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //txtName is a reference of an EditText Field
-        imm.hideSoftInputFromWindow(mEtUserAge.getWindowToken(), 0);
     }
 }
