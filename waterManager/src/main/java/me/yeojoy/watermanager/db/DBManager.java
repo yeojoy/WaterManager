@@ -232,6 +232,7 @@ public class DBManager implements DBConstants {
 
             if (count > 0) {
                 MyLog.d(TAG, "updating a row is successful.");
+                db.setTransactionSuccessful();
             } else {
                 MyLog.d(TAG, "updating a row fails.");
             }
@@ -287,6 +288,7 @@ public class DBManager implements DBConstants {
 
             if (count > 0) {
                 MyLog.d(TAG, "deleting a row is successful.");
+                db.setTransactionSuccessful();
             } else {
                 MyLog.d(TAG, "deleting a row fails.");
             }
@@ -308,7 +310,7 @@ public class DBManager implements DBConstants {
 
         List<MyWater> list = new ArrayList<MyWater>(cursor.getCount());
 
-        MyWater water = null;
+        MyWater water;
         cursor.moveToFirst();
         do {
             water = new MyWater(cursor.getInt(INDEX_ID),
