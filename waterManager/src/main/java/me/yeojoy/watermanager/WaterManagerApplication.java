@@ -2,6 +2,9 @@ package me.yeojoy.watermanager;
 
 import android.app.Application;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.util.PreferencesUtil;
 
@@ -13,6 +16,8 @@ public class WaterManagerApplication extends Application implements Consts {
     public static int COUNT = -1;
 
     public static int DAILY_GOAL_WATER_QUANTITY = 0;
+
+    public static String TODAY = new SimpleDateFormat(DATE_FORMAT).format(new Date());
 
     @Override
     public void onCreate() {

@@ -13,7 +13,6 @@ import java.util.List;
 
 import me.yeojoy.watermanager.BuildConfig;
 import me.yeojoy.watermanager.R;
-import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.model.MyWater;
 import my.lib.MyLog;
 
@@ -214,7 +213,7 @@ public class DBManager implements DBConstants {
 
             if (BuildConfig.DEBUG) {
                 Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
-                if (c != null) {
+                if (c != null && c.getCount() > 0) {
                     c.moveToFirst();
                     MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
                     do {
@@ -270,7 +269,7 @@ public class DBManager implements DBConstants {
 
             if (BuildConfig.DEBUG) {
                 Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
-                if (c != null) {
+                if (c != null && c.getCount() > 0) {
                     c.moveToFirst();
                     MyLog.d(TAG, "++++++++++++++++++++++++++++++++++++++++++++++++");
                     do {

@@ -2,6 +2,7 @@
 package me.yeojoy.watermanager;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import me.yeojoy.watermanager.config.Consts;
 import me.yeojoy.watermanager.db.AsyncQueryResultListener;
 import me.yeojoy.watermanager.db.DBManager;
 import me.yeojoy.watermanager.model.MyWater;
+import me.yeojoy.watermanager.widget.WaterWidgetViewManager;
 import my.lib.MyLog;
 
 public class WaterActivity extends Activity implements View.OnClickListener, Consts {
@@ -40,10 +43,7 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
 
     private WaterQuantityAdapter mAdapter;
 
-    private static final String TODAY
-            = new SimpleDateFormat(DATE_FORMAT).format(new Date());
-
-    private String mDate = TODAY;
+    private String mDate = WaterManagerApplication.TODAY;
 
     private List<MyWater> mMyWaterList;
 
@@ -69,7 +69,7 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
         mBtnTheDayAfter.setOnClickListener(this);
         mBtnTheDayBefore.setOnClickListener(this);
 
-        mTvDate.setText(TODAY);
+        mTvDate.setText(mDate);
     }
 
     @Override
@@ -210,5 +210,13 @@ public class WaterActivity extends Activity implements View.OnClickListener, Con
         c.add(Calendar.DATE, value);
         MyLog.d(TAG, "getDateByValue(), after add(), today : " + new SimpleDateFormat(DATE_FORMAT).format(c.getTime()));
         return new SimpleDateFormat(DATE_FORMAT).format(c.getTime());
+    }
+
+    public void updateAppWidget() {
+        RemoteViews views = new RemoteViews(mContext.getPackageName(),
+                R.layout.water_widget);
+
+        WaterWidgetViewManager.setWidgetViews(mContext, views,
+                AppWidgetManager.getInstance(mContext), -1);
     }
 }

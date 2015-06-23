@@ -103,7 +103,7 @@ public class WaterQuantityAdapter extends BaseAdapter {
                     CommonUtils.hideKeyboard(mContext, viewHolder.mEtQuantity);
                     viewHolder.mBtnEdit.setText(R.string.btn_edit);
 
-
+                    ((WaterActivity) mContext).updateAppWidget();
                 }
             }
         });
@@ -114,6 +114,8 @@ public class WaterQuantityAdapter extends BaseAdapter {
                 mMyWaterList.remove(water);
                 ((WaterActivity) mContext).showTotalQuantity(mMyWaterList);
                 deleteDrinkingWater(water);
+
+                ((WaterActivity) mContext).updateAppWidget();
             }
         });
 

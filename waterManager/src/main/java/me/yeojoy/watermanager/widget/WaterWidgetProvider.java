@@ -1,27 +1,24 @@
 
 package me.yeojoy.watermanager.widget;
 
-import me.yeojoy.watermanager.R;
-import me.yeojoy.watermanager.WaterManagerApplication;
-import me.yeojoy.watermanager.config.Consts;
-import me.yeojoy.watermanager.db.DBHelper;
-import me.yeojoy.watermanager.db.DBManager;
-import me.yeojoy.watermanager.model.MyWater;
-import me.yeojoy.watermanager.util.PreferencesUtil;
-import my.lib.MyLog;
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
+
+import me.yeojoy.watermanager.R;
+import me.yeojoy.watermanager.WaterManagerApplication;
+import me.yeojoy.watermanager.config.Consts;
+import me.yeojoy.watermanager.db.DBManager;
+import me.yeojoy.watermanager.model.MyWater;
+import my.lib.MyLog;
 
 public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
 
@@ -42,6 +39,11 @@ public class WaterWidgetProvider extends AppWidgetProvider implements Consts {
                          int[] appWidgetIds) {
         MyLog.i(TAG, "onUpdate()");
         final int widgetCount = appWidgetIds.length;
+
+        String today = new SimpleDateFormat(DATE_FORMAT).format(new Date());
+        if (!today.equals(WaterManagerApplication.TODAY)) {
+            WaterManagerApplication.TODAY = today;
+        }
 
         for (int i = 0; i < widgetCount; i++) {
             MyLog.d(TAG, "onUpdate(), AppWidget ID : " + appWidgetIds[i]);

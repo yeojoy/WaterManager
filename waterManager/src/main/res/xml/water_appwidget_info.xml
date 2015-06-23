@@ -6,6 +6,5 @@
 	android:initialLayout="@layout/water_widget"
 	android:resizeMode="horizontal|vertical"
 	android:widgetCategory="home_screen"
-	android:configure="me.yeojoy.watermanager.WaterConfiguration" >
-
-</appwidget-provider>
+    android:updatePeriodMillis="3600000"
+	android:configure="me.yeojoy.watermanager.WaterConfiguration" />
