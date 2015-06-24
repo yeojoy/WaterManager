@@ -119,7 +119,8 @@ public class DBManager implements DBConstants {
 
         if (dto == null) return false;
 
-        Cursor cursor = null;
+        Cursor cursor;
+        boolean isAleadySaved = false;
 
         // TODO select last data
         SQLiteDatabase db = null;
@@ -130,7 +131,9 @@ public class DBManager implements DBConstants {
             cursor = db.query(TABLE_NAME, null, DATE + " = ? AND " + TIME + " = ?", selectionArgs,
                     null, null, null);
 
-            if (cursor != null && cursor.getCount() > 0) return true;
+            if (cursor != null && cursor.getCount() > 0) {
+                isAleadySaved = true;
+            }
         } catch (SQLiteException e) {
             MyLog.e(TAG, e.getMessage());
         } finally {
@@ -139,7 +142,7 @@ public class DBManager implements DBConstants {
             }
         }
         
-        return false;
+        return isAleadySaved;
     }
 
     /**
@@ -152,7 +155,7 @@ public class DBManager implements DBConstants {
 
         Cursor cursor = null;
 
-        List<MyWater> list = new ArrayList<MyWater>();
+        List<MyWater> list = null;
 
         // TODO select last data
         SQLiteDatabase db = null;
@@ -169,11 +172,6 @@ public class DBManager implements DBConstants {
                         null, null, null);
             }
 
-
-            if (cursor == null && cursor.getCount() < 1) {
-                MyLog.d(TAG, mContext.getString(R.string.warning_no_data));
-                return null;
-            }
             list = convertCursorToList(cursor);
 
             db.endTransaction();
@@ -183,6 +181,10 @@ public class DBManager implements DBConstants {
             if (db != null) {
                 db.close();
             }
+        }
+
+        if (list == null || list.size() > 0) {
+            MyLog.d(TAG, mContext.getString(R.string.warning_no_data));
         }
 
         return list;
