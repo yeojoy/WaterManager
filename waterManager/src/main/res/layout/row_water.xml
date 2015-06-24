@@ -21,6 +21,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/tv_time"
         android:layout_marginLeft="18dp"
+        android:inputType="numberDecimal"
+        android:windowSoftInputMode="adjustPan|stateHidden"
         android:hint=""
         android:text="250ml"
         android:enabled="false"

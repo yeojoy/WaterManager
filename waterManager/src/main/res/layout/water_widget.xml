@@ -29,7 +29,6 @@
 			android:layout_below="@id/tv_today_quantity"
 			android:layout_alignLeft="@id/tv_today_quantity"
 			android:layout_alignRight="@id/tv_today_quantity"
-
 			android:textColor="@android:color/black"
 			android:textSize="13dp"
 			android:gravity="center" />

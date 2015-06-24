@@ -1,6 +1,7 @@
 package me.yeojoy.watermanager.adapter;
 
 import android.content.Context;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,25 +86,43 @@ public class WaterQuantityAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (viewHolder.mBtnEdit.getText().toString()
                         .equals(mContext.getText(R.string.btn_edit))) {
+                    CommonUtils.showKeyboard(mContext, viewHolder.mEtQuantity);
+
+                    viewHolder.mEtQuantity.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     viewHolder.mEtQuantity.setEnabled(true);
                     viewHolder.mEtQuantity.setFocusable(true);
                     viewHolder.mEtQuantity.setFocusableInTouchMode(true);
+
+
+                    viewHolder.mEtQuantity.requestFocus();
                     viewHolder.mEtQuantity.setSelection(viewHolder.mEtQuantity.getText().toString().length());
                     viewHolder.mBtnEdit.setText(R.string.btn_edit_clicked);
+
+
                 } else {
-                    MyLog.d(TAG, "before : " + water.toString());
-                    water.setDrinkingQuantity(Integer.parseInt(viewHolder.mEtQuantity.getText().toString()));
+                    try {
+                        water.setDrinkingQuantity(Integer.parseInt(viewHolder.mEtQuantity.getText().toString()));
+
+                    } catch (NumberFormatException e) {
+                        viewHolder.mEtQuantity.setText("");
+                        Toast.makeText(mContext, R.string.warning_number_format,
+                                Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+
                     MyLog.d(TAG, "after : " + water.toString());
                     updateDrinkingWater(water);
 
                     ((WaterActivity) mContext).showTotalQuantity(mMyWaterList);
 
-                    viewHolder.mEtQuantity.setEnabled(false);
-                    viewHolder.mEtQuantity.setFocusable(false);
                     viewHolder.mEtQuantity.setFocusableInTouchMode(false);
-                    CommonUtils.hideKeyboard(mContext, viewHolder.mEtQuantity);
+                    viewHolder.mEtQuantity.setFocusable(false);
+                    viewHolder.mEtQuantity.setEnabled(false);
+
                     viewHolder.mBtnEdit.setText(R.string.btn_edit);
 
+                    CommonUtils.hideKeyboard(mContext, viewHolder.mEtQuantity);
                     ((WaterActivity) mContext).updateAppWidget();
                 }
             }
