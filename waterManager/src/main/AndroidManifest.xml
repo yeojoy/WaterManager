@@ -16,15 +16,16 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+
         <activity
         	android:name="me.yeojoy.watermanager.WaterConfiguration" >
 			<intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
 		</activity>
+
 		<receiver
 			android:name=".widget.WaterWidgetProvider">
-
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
 			</intent-filter>

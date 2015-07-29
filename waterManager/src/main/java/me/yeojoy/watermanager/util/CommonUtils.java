@@ -3,6 +3,7 @@ package me.yeojoy.watermanager.util;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.GridLayout;
 
 /**
  * Created by yeojoy on 15. 6. 19..
